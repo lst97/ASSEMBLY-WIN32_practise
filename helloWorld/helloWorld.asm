@@ -38,8 +38,8 @@ includelib  kernel32.lib
 ;|********************************DATA***********************************;
 		.const
 szTitle          db	'TITLE (ASSEMBLY)', 0
-szContent		     db	'WELCOME TO MASM32!', 0
-szContentOK		   db	'You Click OK', 0
+szContent	 db	'WELCOME TO MASM32!', 0
+szContentOK	 db	'You Click OK', 0
 szContentCANCEL	 db	'You Click CANCEL', 0
 
 ;|********************************CODE***********************************;

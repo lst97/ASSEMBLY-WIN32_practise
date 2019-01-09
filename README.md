@@ -2,7 +2,7 @@
 My win32 assembly language run-down 
 
 <p>This repository is logging the way that I learn win32 assembly using the book and video with Ubuntu 18.10 &amp; Windows 10:</p>
-<p><strong>BOOK:</strong> "Windows.环境下32位汇编语言程序设计（第2版）" ISBN:9787121022609&nbsp; &nbsp;<a href="https://item.jd.com/11917487.html" rel="nofollow">https://book.douban.com/subject/1783103/</a></p>
+<p><strong>BOOK:</strong> "Windows.环境下32位汇编语言程序设计（第2版）" ISBN:9787121022609&nbsp; &nbsp;<a href="https://book.douban.com/subject/1783103/" rel="nofollow">https://book.douban.com/subject/1783103/</a></p>
 <p>&nbsp;</p>
 <p><strong>VIDEO:</strong> "【Win32汇编】《Win32汇编语言程序设计》（小甲鱼）"&nbsp;<a href="https://www.bilibili.com/video/av28141241">https://www.bilibili.com/video/av28141241</a></p>
 <p>&nbsp;</p>

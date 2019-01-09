@@ -1,7 +1,7 @@
 ;|**********************************************************************;
 ;* Project           : Basic_WIN32_ASSEMBLY
 ;*
-;* Program name      : elloWorld.asm
+;* Program name      : helloWorld.asm
 ;*
 ;* Author            : SIO TOU LAI (laisiotou1997@gmail.com)
 ;*

@@ -17,11 +17,12 @@
 ;*
 ;* Date        Author      Ref    Revision (Date in DDMMYYYY format)
 ;* 14012019    lst97       1      First release
+;* 15012019    lst97       2      Add a button for open user browser
 ;*
 ;* Known Issue       :
 ;*
 ;* Note              :
-;* code from https://www.bilibili.com/video/av28141241/?p=27
+;* reference: https://www.bilibili.com/video/av28141241/?p=35
 ;*
 ;|**********************************************************************;
 
@@ -31,12 +32,15 @@
 option casemap:none ;capitial letter?
 
 include		windows.inc
-include		gdi32.inc
-includelib	gdi32.lib
+
 include		user32.inc
 includelib	user32.lib
+
 include		kernel32.inc
 includelib	kernel32.lib
+
+include		shell32.inc
+includelib	shell32.lib
 
 ;|********************************DATA***********************************;
 .data?
@@ -47,6 +51,11 @@ includelib	kernel32.lib
 	szClassName		db	'WIN32 ASSEMBLY', 0
 	szCaptionMain	db	'Hello World_ASSEMBLY', 0
 	szText			db	'Welcome to WIN32_ASM!', 0
+	
+	szButtonType	db	'button', 0
+	szButtonText	db	'OPEN BROWSER', 0
+	szShellType		db	'open', 0
+	szURL			db	'https://www.google.com/', 0
 ;|********************************CODE***********************************;
 .code
 ;= = = = = = = = = = = = = = Windows Process = = = = = = = = = = = = = = = 
@@ -64,13 +73,23 @@ includelib	kernel32.lib
 				invoke 	DrawText, @hDc, addr szText, -1,\
 						addr @stRect, DT_SINGLELINE or DT_CENTER or DT_VCENTER
 				invoke	EndPaint, hWnd, addr @stPs
-				
+		.elseif eax == WM_CREATE		;Create button
+				invoke	CreateWindowEx, NULL, offset szButtonType, offset szButtonText,\
+						WS_CHILD or WS_VISIBLE,\
+						10, 10, 150, 22,\
+						hWnd, 1, hInstance, NULL		
 		.elseif	eax == WM_CLOSE
 				invoke	DestroyWindow, hWinMain
 				invoke	PostQuitMessage, NULL
 				
+		.elseif	eax == WM_COMMAND		;When button click event
+				mov eax, wParam
+				.if	ax == IDOK
+						invoke	ShellExecute, NULL, offset szShellType,\
+								offset szURL, NULL, NULL, SW_SHOWNORMAL
+				.endif
 		.else
-				invoke	DefWindowProc, hWnd, uMsg, wParam, lParam
+				invoke	DefWindowProc, hWnd, uMsg, wParam, lParam		;Handle other events
 				ret
 		.endif
 		
@@ -79,7 +98,7 @@ includelib	kernel32.lib
 			
 	_ProcWinMain	endp
 	
-	_WinMain		proc
+	_WinMain	proc
 		LOCAL	@stWndClass:WNDCLASSEX
 		LOCAL	@stMsg:MSG
 		
@@ -110,9 +129,9 @@ includelib	kernel32.lib
 ;= = = = = = = = = = = = = = = Message Loop = = = = = = = = = = = = = = = = 
 		.while	TRUE
 				invoke	GetMessage, addr @stMsg, NULL, 0, 0
-				.break	.if	eax == 0
-				invoke	TranslateMessage, addr @stMsg
-				invoke	DispatchMessage, addr @stMsg
+				.break .if eax == 0
+				;invoke	TranslateMessage, addr @stMsg
+				invoke 	DispatchMessage, addr @stMsg		;GetMessage than to _ProcWinMain
 		.endw
 		ret
 		

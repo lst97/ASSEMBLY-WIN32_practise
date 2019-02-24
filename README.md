@@ -8,7 +8,6 @@
 <p>1. "【Win32汇编】《Win32汇编语言程序设计》（小甲鱼）" - <a href="https://www.bilibili.com/video/av28141241">https://www.bilibili.com/video/av28141241</a></p>
 <p>&nbsp;</p>
 <p><strong>TOOLS:</strong></p>
-<p>&nbsp;</p>
 <table style="width: 586px;">
 <tbody>
 <tr>

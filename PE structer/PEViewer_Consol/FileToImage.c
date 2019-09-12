@@ -11,7 +11,7 @@ int fnExtendAndSaveFile(FILE* pTargetFile) {
 
 	// Extend File to Image.
 	pImageBuffer = fnExtendEXE(pFileBuffer);
-	free(pDosNtHeader);
+	free(gpDosNtHeader);
 
 	// Back to File format
 	pNewFileBuffer = fnBackToFile(pImageBuffer);
@@ -58,11 +58,11 @@ unsigned char* fnCopyEXE(FILE* pTargetFile) {
 unsigned int fnGetFileSize() {
 	unsigned int totalRawSize = 0;
 
-	unsigned int sizeOfHeader = DosNtHeaderValue[47];
-	unsigned int numberOfSection = DosNtHeaderValue[21];
+	unsigned int sizeOfHeader = gDosNtHeaderValue[47];
+	unsigned int numberOfSection = gDosNtHeaderValue[21];
 	unsigned int sectionTableOffset = BYTE * 8 + DWORD + DWORD;
 
-	unsigned char* pFirstSectionTable = pSectionTable;
+	unsigned char* pFirstSectionTable = gpSectionTable;
 
 	// File size = (SizeOfHeaders + all of the SizeOfRawData)
 	for (unsigned int counter = numberOfSection; counter > 0; counter--) {
@@ -75,16 +75,16 @@ unsigned int fnGetFileSize() {
 }
 
 unsigned char* fnExtendEXE(char* pFileBuffer) {
-	unsigned int sizeOfHeader = DosNtHeaderValue[47];
-	unsigned int sizeOfImage = DosNtHeaderValue[46];
-	unsigned int numberOfSection = DosNtHeaderValue[21];
+	unsigned int sizeOfHeader = gDosNtHeaderValue[47];
+	unsigned int sizeOfImage = gDosNtHeaderValue[46];
+	unsigned int numberOfSection = gDosNtHeaderValue[21];
 
 	unsigned int sizeOfRawData = 0;
 	unsigned int pointerToRawData = 0;
 	unsigned int Misc = 0;
 	unsigned int virtualAddress = 0;
 
-	unsigned char* pFirstSectionTable = pSectionTable;
+	unsigned char* pFirstSectionTable = gpSectionTable;
 	unsigned char* pImageBuffer = NULL;
 
 	pImageBuffer = (unsigned char*)malloc(sizeof(char) * sizeOfImage);

@@ -3,11 +3,9 @@
 #include "PEinfo.h"
 #include <string.h>
 
-extern unsigned int DosNtHeaderValue[57];
-extern unsigned int* pSectionTableValue;
-extern unsigned int* pSectionNameBuffer;
-extern unsigned char* pSectionTable;
-extern unsigned char* pDosNtHeader;
+extern unsigned int gDosNtHeaderValue[57];
+extern unsigned char* gpSectionTable;
+extern unsigned char* gpDosNtHeader;
 
 int fnExtendAndSaveFile(FILE* pTargetFile);
 

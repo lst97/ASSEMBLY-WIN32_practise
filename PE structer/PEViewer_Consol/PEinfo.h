@@ -9,6 +9,8 @@
 #define WORD 2
 #define DWORD 4
 #define SECTION_TABLE_SIZE 10
+#define _IN_
+#define _OUT_
 
 int GetPEinfo(FILE*, bool);
 int fnPrintPEinfo();

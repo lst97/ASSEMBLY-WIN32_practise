@@ -18,6 +18,7 @@
 ;* Date        Author      Ref    Revision (Date in DDMMYYYY format)
 ;* 11092019    lst97       1      First release
 ;* 13092019    lst97       2      Add PE inject function
+;* 14092019    lst97       3      Add add sectionTable function
 ;*
 ;* Known Issue       :
 ;* - PEinfo not yet finish, can only read until section table.

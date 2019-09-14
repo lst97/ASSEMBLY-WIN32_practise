@@ -5,12 +5,13 @@ unsigned int gNtHeaderOffset = 0;
 unsigned int gSectionTableOffset = 0;
 unsigned int gNumberOfSection = 0;
 
-// Set goable for latter use
+// Set gobal for latter use
 unsigned int gVirtualAddress = 0;
 unsigned int gPointerToRawData = 0;
 unsigned int gMisc = 0;
 unsigned int gImageBase = 0;
 unsigned int gAddressOfEntryPoint = 0;
+unsigned int gSizeOfRawData = 0;
 
 int fnPEInject(_IN_ FILE* pTargetFile) {
 	unsigned int fileSize = 0;
@@ -48,20 +49,18 @@ int fnPEInject(_IN_ FILE* pTargetFile) {
 
 	pFileBuffer += gSectionTableOffset + 1 * SECTIONTABLE_SIZE;	// Inject to second sectionTable
 	gMisc = *((unsigned int*)(pFileBuffer + MISC_OFFSET - 4) +1);
-	gVirtualAddress = *((unsigned int*)(pFileBuffer + VIRTUALADDRESS_OFFSET - 4) + 1);
 	gPointerToRawData = *((unsigned int*)(pFileBuffer + POINTER_TO_RAWDATA_OFFSET - 4) + 1);
+	gVirtualAddress = *((unsigned int*)(pFileBuffer + VIRTUALADDRESS_OFFSET - 4) + 1);
+	gSizeOfRawData = *((unsigned int*)(pFileBuffer + SIZEOF_RAWDATA_OFFSET - 4) + 1);
+	if (gMisc > gSizeOfRawData) {
+		printf("ERROR! Code over size, Please add an addition section table.");
+		getchar();
+		return 0;
+	}
 	pFileBuffer = pFileBufferBase;
 
 	unsigned int convertedCallAddress = MESSAGEBOX_VADDRESS - (gImageBase + gVirtualAddress + gMisc + INSTRUCTION_PUSH_SIZE * 4 + INSTRUCTION_CALL_SIZE);
 	unsigned int convertedEntryPoint = (gAddressOfEntryPoint + gImageBase) - (gImageBase + gVirtualAddress + gMisc + INSTRUCTION_PUSH_SIZE * 4 + INSTRUCTION_CALL_SIZE + INSTRUCTION_JMP_SIZE);
-
-	unsigned char* pInjectCodeBuffer = (unsigned char*)malloc(INSTRUCTION_PUSH_SIZE * 4 + INSTRUCTION_CALL_SIZE + INSTRUCTION_JMP_SIZE);
-	if (pInjectCodeBuffer == NULL) {
-		printf("Fail to allocating heap memory");
-		getchar();
-		return 0;
-	}
-	unsigned char* pInjectCodeBufferBase = pInjectCodeBuffer;
 
 	unsigned char InjectCodeArray[18] = {
 		0x6A, 0x00, 0x6A, 0x00, 0x6A, 0x00, 0x6A, 0x00,
@@ -88,7 +87,9 @@ int fnPEInject(_IN_ FILE* pTargetFile) {
 	// FileBuffer to Disk
 	FILE* pNewTargetFile = fopen("C:\\Users\\DEBUG\\Desktop\\InjectedProgram.exe", "wb");
 	fwrite(pFileBuffer, BYTE, fileSize, pNewTargetFile);
+
 	fclose(pNewTargetFile);
+	free(pFileBuffer);
 
 	printf("Inject Success!");
 	getchar();

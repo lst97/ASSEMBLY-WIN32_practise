@@ -155,6 +155,7 @@ int fnPrintPEinfo() {
 	}
 
 	free(gpSectionNameBuffer);
+	free(gpSectionTableBuffer);
 	getchar();
 	return 0;
 }

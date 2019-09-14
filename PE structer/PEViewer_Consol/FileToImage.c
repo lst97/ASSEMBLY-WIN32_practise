@@ -34,7 +34,7 @@ unsigned char* fnCopyEXE(FILE* pTargetFile) {
 	unsigned char* pFileBuffer = NULL;
 	unsigned char* pFileBuffer_Base = NULL;
 
-	bufferSize = fnGetFileSize();
+	bufferSize = fnGetFileSize(pTargetFile);
 	readByteCounter = bufferSize;
 	pFileBuffer = (unsigned char*)malloc(sizeof(char) * bufferSize);
 	if (pFileBuffer == NULL) {
@@ -53,25 +53,6 @@ unsigned char* fnCopyEXE(FILE* pTargetFile) {
 	}
 
 	return pFileBuffer_Base;
-}
-
-unsigned int fnGetFileSize() {
-	unsigned int totalRawSize = 0;
-
-	unsigned int sizeOfHeader = gDosNtHeaderValue[47];
-	unsigned int numberOfSection = gDosNtHeaderValue[21];
-	unsigned int sectionTableOffset = BYTE * 8 + DWORD + DWORD;
-
-	unsigned char* pFirstSectionTable = gpSectionTable;
-
-	// File size = (SizeOfHeaders + all of the SizeOfRawData)
-	for (unsigned int counter = numberOfSection; counter > 0; counter--) {
-		totalRawSize += *((unsigned int*)pFirstSectionTable + (sectionTableOffset / DWORD));
-		sectionTableOffset += 0x28;
-	}
-	totalRawSize += sizeOfHeader;
-
-	return totalRawSize;
 }
 
 unsigned char* fnExtendEXE(char* pFileBuffer) {

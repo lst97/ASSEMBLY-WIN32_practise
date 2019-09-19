@@ -82,9 +82,7 @@ int fnAddSectionTable(_IN_ FILE* pTargetFile) {
 	// Put New section table into FileBuffer
 	memcpy(pNewSectionTable, &InjectSectionTable, sizeof(InjectSectionTable));
 
-
 	// Correction of numberOfSection
-	// use memset....
 	memset(pFileBuffer + (gNtHeaderOffset + NUMBER_OF_SECTION_OFFSET), ++gNumberOfSection, 1);
 
 	// Correction of sizeOfImage

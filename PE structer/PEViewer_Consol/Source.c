@@ -18,6 +18,8 @@
 ;* Date        Author      Ref    Revision (Date in DDMMYYYY format)
 ;* 11092019    lst97       1      First release
 ;* 13092019    lst97       2      Add PE inject function
+;* 14092019    lst97       3      Add add sectionTable function
+;* 19092019    lst97       4      Add print export && reloc table
 ;*
 ;* Known Issue       :
 ;* - PEinfo not yet finish, can only read until section table.
@@ -39,10 +41,13 @@
 #include "Menu.h"
 #include "PEInject.h"
 #include "AddSectionTable.h"
+#include "RvaToFoa.h"
+#include "PrintExportDirectory.h"
+#include "PrintRelocationTable.h"
 
 int main() {
 	int functionNumber = 0;
-	FILE* pTargetFile = fopen("C:\\Users\\DEBUG\\Desktop\\ReverseMe.exe", "rb");
+	FILE* pTargetFile = fopen("C:\\Users\\DEBUG\\Desktop\\dllDemo.dll", "rb");
 	if (pTargetFile == NULL) {
 		printf("ERROR! Fail to open the file!");
 		getchar();
@@ -62,19 +67,22 @@ int main() {
 		case 1:
 			while (getchar() != '\n');
 			system("cls");
-
+			RvaToFoa(pTargetFile, 0x255);
 			GetPEinfo(pTargetFile, true);
+			system("cls");
 			break;
 		case 2:
 			while (getchar() != '\n');
 			system("cls");
 
 			fnExtendAndSaveFile(pTargetFile);
+			system("cls");
 		case 3:
 			while (getchar() != '\n');
 			system("cls");
 
 			fnPEInject(pTargetFile);
+			system("cls");
 			continue;
 
 		case 4:
@@ -82,6 +90,23 @@ int main() {
 			system("cls");
 
 			fnAddSectionTable(pTargetFile);
+			system("cls");
+			break;
+
+		case 5:
+			while (getchar() != '\n');
+			system("cls");
+
+			PrintExportDirectory(pTargetFile);
+			system("cls");
+			break;
+
+		case 6:
+			while (getchar() != '\n');
+			system("cls");
+
+			PrintRelocationTable(pTargetFile);
+			system("cls");
 			break;
 		}
 	}
